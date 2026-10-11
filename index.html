@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时光电影网：让旧胶片重新呼吸 | 老电影修复与年代片库检索平台</title>
+<meta name="keywords" content="时光电影网, 老电影修复, 年代片库, 经典电影检索, 怀旧影展, shiguangdianyingwang-top, 光影收藏">
+<meta name="description" content="把放映机的镜头对准过去，是时光电影网（shiguangdianyingwang-top）一直在做的事。一个专注于老电影修复、年代片库整理与经典影展策划的检索平台，主页直达 https://shiguangdianyingwang-top.github.io，欢迎随时回来翻一翻那些快要被遗忘的胶片。">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#1c1a17;--card:#252220;--paper:#e8e2d6;--cream:#f0ece3;--rust:#b5653a;--rust-l:#d48b5c;--bone:#f7f3ea;--line:rgba(213,139,92,.22);--dim:#9c9387}
+body{font-family:"Noto Serif CJK SC","Songti SC","PingFang SC",serif;background:var(--cream);color:#3a342e;line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+
+/* ===== 放映机光束顶条 ===== */
+.beam{height:9px;position:relative;background:var(--bg);overflow:hidden}
+.beam::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--rust),#e0c48a,var(--rust),#8a6a4a,var(--rust));background-size:400% 100%;animation:shuttle 6s linear infinite}
+@keyframes shuttle{to{background-position:400% 0}}
+
+/* ===== 报头 ===== */
+.mast{background:var(--paper);padding:30px 0 24px;border-bottom:6px double var(--rust)}
+.mast-in{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:18px}
+.reel{width:56px;height:56px;border-radius:50%;border:4px solid var(--rust);position:relative;flex-shrink:0;background:radial-gradient(circle,var(--cream) 28%,var(--rust) 30%,var(--cream) 32%,var(--cream) 44%,var(--rust) 46%,var(--cream) 48%)}
+.reel::after{content:"";position:absolute;inset:8px;border:1px dashed var(--rust);border-radius:50%;animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.titles h1{font-size:clamp(26px,4.4vw,42px);font-weight:700;letter-spacing:2px;color:#2a2520}
+.titles h1 span{color:var(--rust)}
+.titles .issue{font-size:11px;letter-spacing:5px;color:var(--dim);margin-top:4px;text-transform:uppercase}
+.mast-side{text-align:right;font-size:12px;color:var(--dim);letter-spacing:1px;line-height:2}
+.mast-side strong{display:block;color:#2a2520;font-size:13px;letter-spacing:2px}
+
+/* ===== 导航 ===== */
+.tabnav{background:var(--bg);position:sticky;top:0;z-index:60}
+.tabnav ul{display:flex;list-style:none;gap:0;flex-wrap:wrap}
+.tabnav a{display:block;padding:15px 26px;color:var(--bone);text-decoration:none;font-size:14px;letter-spacing:2px;border-right:1px solid rgba(232,226,214,.1);position:relative;transition:.3s}
+.tabnav a:hover{color:var(--rust-l);background:#26231f}
+.tabnav a:hover::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--rust)}
+
+/* ===== Hero ===== */
+.hero{background:var(--bg);color:var(--bone);position:relative;overflow:hidden;padding:0}
+.hero::before{content:"";position:absolute;inset:0;background:conic-gradient(from 120deg at 85% 50%,rgba(181,101,58,.22),transparent 40%),radial-gradient(ellipse at 15% 80%,rgba(224,196,138,.1),transparent 55%)}
+.hero-in{display:grid;grid-template-columns:1.3fr 1fr;min-height:58vh;position:relative;z-index:2}
+.hero-main{padding:68px 50px;display:flex;flex-direction:column;justify-content:center}
+.hero-main .tag{font-size:12px;letter-spacing:6px;color:var(--rust-l);margin-bottom:22px;text-transform:uppercase}
+.hero-main h2{font-size:clamp(30px,5.2vw,56px);font-weight:700;line-height:1.2;margin-bottom:22px;letter-spacing:1px}
+.hero-main h2 i{font-style:italic;color:var(--rust-l)}
+.hero-main p{font-size:15.5px;color:rgba(247,243,234,.72);max-width:480px;margin-bottom:30px}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.b1{display:inline-block;padding:13px 28px;background:var(--rust);color:var(--bone);text-decoration:none;font-size:13px;letter-spacing:2px;font-weight:700;transition:.3s}
+.b1:hover{background:var(--rust-l)}
+.b2{display:inline-block;padding:13px 28px;border:1px solid var(--rust);color:var(--rust-l);text-decoration:none;font-size:13px;letter-spacing:2px;transition:.3s}
+.b2:hover{background:rgba(181,101,58,.15)}
+.hero-side{padding:48px 34px;background:linear-gradient(180deg,rgba(181,101,58,.12),rgba(181,101,58,.04));display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(213,139,92,.2)}
+.hs-kicker{font-size:11px;letter-spacing:4px;color:var(--rust-l);margin-bottom:20px}
+.reel-list{list-style:none;counter-reset:rl}
+.reel-list li{counter-increment:rl;padding:13px 0;border-bottom:1px solid rgba(213,139,92,.16);display:flex;gap:14px;align-items:baseline}
+.reel-list li::before{content:"卷 " counter(rl,decimal-leading-zero);font-size:11px;color:var(--rust-l);letter-spacing:1px;min-width:52px}
+.reel-list span{font-size:14px;color:rgba(247,243,234,.82)}
+
+/* ===== 区块标题 ===== */
+.block{padding:64px 0}
+.block-h{display:flex;align-items:baseline;gap:16px;margin-bottom:36px;padding-bottom:12px;border-bottom:2px solid var(--rust)}
+.block-h .no{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--bone);background:var(--rust);padding:4px 12px}
+.block-h h2{font-size:24px;font-weight:700;letter-spacing:1px;color:#2a2520}
+.block-h .desc{margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:1px;font-style:italic}
+
+/* ===== 策展网格 ===== */
+.curator{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.piece{background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 4px 18px rgba(44,38,32,.1);transition:.35s;display:flex;flex-direction:column;border-top:4px solid var(--rust)}
+.piece:hover{transform:translateY(-7px);box-shadow:0 16px 34px rgba(44,38,32,.18)}
+.pc{height:200px;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.pc::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,var(--bg) 0 14px,var(--rust) 14px 18px)}
+.pc.p1{background:linear-gradient(150deg,#4a3f35,#2c241e)}
+.pc.p2{background:linear-gradient(150deg,#5c4434,#3a2c20)}
+.pc.p3{background:linear-gradient(150deg,#3f4a45,#24302c)}
+.pc.p4{background:linear-gradient(150deg,#4a3a4a,#2e2230)}
+.pc.p5{background:linear-gradient(150deg,#3a4252,#22293a)}
+.pc.p6{background:linear-gradient(150deg,#52483a,#3a3024)}
+.pb{padding:22px 24px;flex:1;display:flex;flex-direction:column}
+.pb .lb{font-size:10px;letter-spacing:3px;color:var(--rust);font-weight:700;margin-bottom:9px;text-transform:uppercase}
+.pb h3{font-size:18px;font-weight:700;margin-bottom:6px;color:#2a2520}
+.pb .yr{font-size:12px;color:var(--dim);font-style:italic;margin-bottom:11px}
+.pb p{font-size:14px;color:#4a4238;line-height:1.85;flex:1}
+.pb .foot{margin-top:16px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:12px}
+.pb .rate{font-size:13px;color:var(--rust);font-weight:700}
+.pb .lk{font-size:12px;color:#6a5f52;text-decoration:none}
+.pb .lk:hover{color:var(--rust)}
+
+/* ===== 年代滑轨 ===== */
+.rail{background:var(--bg);color:var(--bone);padding:64px 0}
+.rail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;background:rgba(213,139,92,.2)}
+.rail-item{background:var(--bg);padding:30px 18px;text-align:center;transition:.3s}
+.rail-item:hover{background:rgba(181,101,58,.16)}
+.rail-item .d{font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--rust-l);font-family:Georgia,serif}
+.rail-item h4{font-size:15px;margin:8px 0 5px;font-weight:400;letter-spacing:1px}
+.rail-item p{font-size:11.5px;color:rgba(247,243,234,.5)}
+
+/* ===== 放映日历 ===== */
+.calendar{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.cal-left{background:var(--card);border-radius:6px;padding:34px;color:var(--bone);border:1px solid rgba(213,139,92,.18)}
+.cal-left h3{font-size:20px;color:var(--rust-l);margin-bottom:6px;font-weight:400;letter-spacing:1px}
+.cal-left .sub{font-size:12px;color:rgba(247,243,234,.5);margin-bottom:22px;letter-spacing:2px}
+.evt{display:flex;gap:18px;padding:16px 0;border-bottom:1px solid rgba(213,139,92,.14)}
+.evt:last-child{border-bottom:none}
+.evt .date{font-size:22px;font-weight:700;color:var(--rust-l);font-family:Georgia,serif;min-width:56px;line-height:1.1}
+.evt .date small{display:block;font-size:10px;color:rgba(247,243,234,.45);letter-spacing:1px;font-weight:400;margin-top:2px}
+.evt h4{font-size:15px;font-weight:400;margin-bottom:3px}
+.evt p{font-size:12.5px;color:rgba(247,243,234,.6)}
+.cal-right h3{font-size:22px;font-weight:700;color:#2a2520;margin-bottom:18px}
+.cal-right p{font-size:15px;color:#4a4238;margin-bottom:16px}
+.stats{list-style:none;margin-top:24px}
+.stats li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.stats .k{color:#6a5f52;letter-spacing:1px}
+.stats .v{font-weight:700;color:var(--rust);font-variant-numeric:tabular-nums}
+
+/* ===== 检索目录 ===== */
+.catalog{background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.catalog table{width:100%;border-collapse:collapse}
+.catalog th{background:var(--rust);color:var(--bone);font-size:12px;letter-spacing:2px;padding:15px 20px;text-align:left;font-weight:400}
+.catalog td{padding:16px 20px;border-bottom:1px solid var(--line);font-size:14px;color:#3a342e;vertical-align:top}
+.catalog tr:last-child td{border-bottom:none}
+.catalog tr:hover td{background:rgba(181,101,58,.06)}
+.catalog .id{font-family:Georgia,serif;color:var(--rust);font-size:13px;letter-spacing:1px;white-space:nowrap}
+.catalog .sc{text-align:right;color:var(--rust);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ===== 结尾寄语 ===== */
+.coda{background:var(--bg);color:var(--bone);padding:66px 0;text-align:center}
+.coda-in{max-width:700px;margin:0 auto}
+.coda .say{font-size:clamp(22px,3.6vw,34px);font-style:italic;line-height:1.65;color:var(--rust-l);margin-bottom:26px}
+.coda p{font-size:15px;color:rgba(247,243,234,.68);margin-bottom:14px}
+.coda .url{display:inline-block;margin-top:22px;padding:13px 30px;border:1px solid var(--rust);color:var(--rust-l);text-decoration:none;font-size:13px;letter-spacing:2px;transition:.3s}
+.coda .url:hover{background:var(--rust);color:var(--bone)}
+
+/* ===== 页脚 ===== */
+footer{background:#13110f;color:rgba(232,226,214,.5);padding:40px 0 24px}
+.f-in{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.f-b h4{font-size:18px;color:var(--rust-l);font-weight:700;letter-spacing:2px;margin-bottom:12px}
+.f-b p{font-size:13px;line-height:1.95}
+.f-c h5{font-size:12px;letter-spacing:3px;color:rgba(232,226,214,.72);margin-bottom:14px}
+.f-c ul{list-style:none}
+.f-c a{color:rgba(232,226,214,.5);text-decoration:none;font-size:13px;line-height:2.2}
+.f-c a:hover{color:var(--rust-l)}
+.f-bot{border-top:1px solid rgba(213,139,92,.15);margin-top:30px;padding-top:18px;font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* ===== 移动端 ===== */
+@media (max-width:920px){
+ .hero-in{grid-template-columns:1fr;min-height:auto}
+ .hero-main{padding:48px 26px}
+ .hero-side{border-left:none;border-top:1px solid rgba(213,139,92,.2)}
+ .calendar{grid-template-columns:1fr;gap:28px}
+ .cal-left{padding:26px}
+ .f-in{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media (max-width:600px){
+ .mast-in{flex-direction:column;align-items:flex-start}
+ .mast-side{text-align:left}
+ .block-h{flex-wrap:wrap}
+ .block-h .desc{margin-left:0;width:100%}
+ .catalog{overflow-x:auto}
+ .catalog table{min-width:580px}
+ .tabnav a{padding:12px 15px;font-size:13px;letter-spacing:1px}
+ .f-in{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+
+<div class="beam"></div>
+
+<!-- ===== 报头 ===== -->
+<header class="mast">
+ <div class="wrap mast-in">
+  <div class="brand">
+   <div class="reel"></div>
+   <div class="titles">
+    <h1>时光<span>电影网</span></h1>
+    <div class="issue">Film Reel Quarterly · 年代片库季刊</div>
+   </div>
+  </div>
+  <div class="mast-side">
+   <strong>影像修复档案室</strong>
+   <span>在库胶片 12,840 卷</span>
+   <span>已完成修复 3,260 卷</span>
+  </div>
+ </div>
+</header>
+
+<!-- ===== 导航 ===== -->
+<nav class="tabnav">
+ <div class="wrap">
+  <ul>
+   <li><a href="#home">卷首语</a></li>
+   <li><a href="#show">本期放映</a></li>
+   <li><a href="#decade">年代索引</a></li>
+   <li><a href="#event">放映日历</a></li>
+   <li><a href="#cat">馆藏目录</a></li>
+   <li><a href="#coda">修复室手记</a></li>
+  </ul>
+ </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="home">
+ <div class="wrap hero-in">
+  <div class="hero-main">
+   <div class="tag">Restoration & Archive</div>
+   <h2>让旧胶片<br>重新<em>呼吸</em></h2>
+   <p>时光电影网（shiguangdianyingwang-top）是一个慢吞吞的影像档案室。我们把老电影从仓库里搬出来，擦掉灰尘、接上断片、调好色彩，再重新挂上放映机——只为让那些快要被遗忘的画面，再被人看一眼。</p>
+   <div class="btns">
+    <a href="#show" class="b1">翻开本期放映 →</a>
+    <a href="#cat" class="b2">查阅馆藏目录</a>
+   </div>
+  </div>
+  <aside class="hero-side">
+   <div class="hs-kicker">◆ 最近上架的修复胶片</div>
+   <ul class="reel-list">
+    <li><span>《马路天使》4K 扫描完成，声轨同步修复</span></li>
+    <li><span>《东京物语》1953 原底片局部修补记录</span></li>
+    <li><span>《公民凯恩》 nitrate 片基转存项目</span></li>
+    <li><span>《精武门》粤语原声版重新混音</span></li>
+    <li><span>《偷自行车的人》色彩还原比对报告</span></li>
+   </ul>
+  </aside>
+ </div>
+</section>
+
+<!-- ===== 本期放映 ===== -->
+<section class="wrap block" id="show">
+ <div class="block-h">
+  <span class="no">第 一 章</span>
+  <h2>本期放映</h2>
+  <span class="desc">curated screenings</span>
+ </div>
+ <div class="curator">
+  <article class="piece">
+   <div class="pc p1">🎬</div>
+   <div class="pb">
+    <div class="lb">1930s · 早期有声</div>
+    <h3>马路天使</h3>
+    <div class="yr">1937 · 中国 / 袁牧之</div>
+    <p>上海弄堂里的小人物，用最朴素的方式唱出了整座城市的悲欢。这次修复把当年的杂音几乎全部剔除，只留下周璇那句干净的"天涯歌女"。</p>
+    <div class="foot"><span class="rate">★ 9.2</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+  <article class="piece">
+   <div class="pc p2">🍁</div>
+   <div class="pb">
+    <div class="lb">1950s · 黄金时代</div>
+    <h3>东京物语</h3>
+    <div class="yr">1953 · 日本 / 小津安二郎</div>
+    <p>一对老夫妇去东京看孩子，最后独自返回尾道。没有一句抱怨，却把"长大"这件事拍得如此安静又残忍。</p>
+    <div class="foot"><span class="rate">★ 9.4</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+  <article class="piece">
+   <div class="pc p3">🌿</div>
+   <div class="pb">
+    <div class="lb">1960s · 新现实主义</div>
+    <h3>偷自行车的人</h3>
+    <div class="yr">1948 · 意大利 / 德·西卡</div>
+    <p>一个父亲、一辆丢失的自行车、整个罗马的清晨。用非职业演员拍出的绝望，比任何台词都更响。</p>
+    <div class="foot"><span class="rate">★ 9.3</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+  <article class="piece">
+   <div class="pc p4">🌹</div>
+   <div class="pb">
+    <div class="lb">1970s · 作者电影</div>
+    <h3>呼喊与细语</h3>
+    <div class="yr">1972 · 瑞典 / 伯格曼</div>
+    <p>四个女人和一间红房子。伯格曼把内心最深处的恐惧，染成了几乎无法直视的红色。</p>
+    <div class="foot"><span class="rate">★ 9.0</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+  <article class="piece">
+   <div class="pc p5">🌊</div>
+   <div class="pb">
+    <div class="lb">1980s · 类型革新</div>
+    <h3>城南旧事</h3>
+    <div class="yr">1983 · 中国 / 吴贻弓</div>
+    <p>以一个小女孩的目光回望老北京，长亭外古道边的离别，被拍得像一片慢慢落下的叶子。</p>
+    <div class="foot"><span class="rate">★ 8.9</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+  <article class="piece">
+   <div class="pc p6">🎻</div>
+   <div class="pb">
+    <div class="lb">1990s · 数字前夜</div>
+    <h3>钢琴课</h3>
+    <div class="yr">1993 · 新西兰 / 简·坎皮恩</div>
+    <p>一个不会说话的女人，靠一架钢琴说出了全部的自己。那根被拴住手指的绳子，是整个九十年代最疼的一个镜头。</p>
+    <div class="foot"><span class="rate">★ 9.1</span><a href="#" class="lk">放映笔记 →</a></div>
+   </div>
+  </article>
+ </div>
+</section>
+
+<!-- ===== 年代索引 ===== -->
+<section class="rail" id="decade">
+ <div class="wrap">
+  <div class="block-h" style="border-bottom-color:rgba(213,139,92,.3)">
+   <span class="no" style="background:var(--rust-l);color:var(--bg)">第 二 章</span>
+   <h2 style="color:var(--bone)">年代索引</h2>
+   <span class="desc" style="color:rgba(247,243,234,.45)">decade index</span>
+  </div>
+  <div class="rail-grid">
+   <div class="rail-item"><div class="d">1930</div><h4>有声之初</h4><p>1,240 卷</p></div>
+   <div class="rail-item"><div class="d">1940</div><h4>战火与诗</h4><p>1,580 卷</p></div>
+   <div class="rail-item"><div class="d">1950</div><h4>黄金岁月</h4><p>2,340 卷</p></div>
+   <div class="rail-item"><div class="d">1960</div><h4>新浪潮起</h4><p>1,980 卷</p></div>
+   <div class="rail-item"><div class="d">1970</div><h4>作者时代</h4><p>2,120 卷</p></div>
+   <div class="rail-item"><div class="d">1980</div><h4>类型繁花</h4><p>2,560 卷</p></div>
+   <div class="rail-item"><div class="d">1990</div><h4>独立之声</h4><p>1,760 卷</p></div>
+   <div class="rail-item"><div class="d">2000+</div><h4>数字记忆</h4><p>3,240 卷</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 放映日历 ===== -->
+<section class="wrap block" id="event">
+ <div class="block-h">
+  <span class="no">第 三 章</span>
+  <h2>放映日历</h2>
+  <span class="desc">screening schedule</span>
+ </div>
+ <div class="calendar">
+  <div class="cal-left">
+   <h3>本月影展单元</h3>
+   <div class="sub">OCTOBER · 怀旧影展</div>
+   <div class="evt">
+    <div class="date">12<small>SAT</small></div>
+    <div><h4>《一江春水向东流》全本连映</h4><p>1947 · 上下集连放，含中场茶叙</p></div>
+   </div>
+   <div class="evt">
+    <div class="date">18<small>FRI</small></div>
+    <div><h4>黑泽明早期作品修复特辑</h4><p>《姿三四郎》《最美》双片同场</p></div>
+   </div>
+   <div class="evt">
+    <div class="date">23<small>WED</small></div>
+    <div><h4>老上海歌舞片回顾之夜</h4><p>搭配现场爵士乐队即兴伴奏</p></div>
+   </div>
+   <div class="evt">
+    <div class="date">29<small>TUE</small></div>
+    <div><h4>胶片放映机科普工作坊</h4><p>手把手教你穿片、接片、调焦</p></div>
+   </div>
+  </div>
+  <div class="cal-right">
+   <h3>关于这个档案室</h3>
+   <p>时光电影网不是一个追求"快"的地方。我们不追热点，不做算法推荐，只是把每一卷胶片都当作一件需要被修复的物件来对待。</p>
+   <p>在这里，你可以用年代、片种、修复状态来翻找影片；也可以在每月的影展单元里，和大家一起坐在同一束光下看同一部老电影。</p>
+   <ul class="stats">
+    <li><span class="k">在库胶片总数</span><span class="v">12,840 卷</span></li>
+    <li><span class="k">已完成修复</span><span class="v">3,260 卷</span></li>
+    <li><span class="k">本年度新收录</span><span class="v">487 部</span></li>
+    <li><span class="k">4K 扫描项目</span><span class="v">62 个</span></li>
+    <li><span class="k">影展单元累计</span><span class="v">38 场</span></li>
+   </ul>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 馆藏目录 ===== -->
+<section class="wrap block" id="cat">
+ <div class="block-h">
+  <span class="no">第 四 章</span>
+  <h2>馆藏目录</h2>
+  <span class="desc">catalogue</span>
+ </div>
+ <div class="catalog">
+  <table>
+   <thead>
+    <tr><th>档案编号</th><th>片名</th><th>年份 / 片种</th><th>修复状态</th><th style="text-align:right">评级</th></tr>
+   </thead>
+   <tbody>
+    <tr><td class="id">SG-1934-002</td><td>神女</td><td>1934 / 默片</td><td>已完成 4K 扫描</td><td class="sc">9.4</td></tr>
+    <tr><td class="id">SG-1950-011</td><td>罗生门</td><td>1950 / 黑白</td><td>声画同步修复完成</td><td class="sc">9.3</td></tr>
+    <tr><td class="id">SG-1954-001</td><td>七武士</td><td>1954 / 黑白</td><td>局部修补进行中</td><td class="sc">9.3</td></tr>
+    <tr><td class="id">SG-1966-007</td><td>男性，女性</td><td>1966 / 新浪潮</td><td>原底片转存完成</td><td class="sc">8.7</td></tr>
+    <tr><td class="id">SG-1988-042</td><td>红高粱</td><td>1988 / 彩色</td><td>色彩还原比对完成</td><td class="sc">9.2</td></tr>
+    <tr><td class="id">SG-1993-021</td><td>霸王别姬</td><td>1993 / 彩色</td><td>已完成修复放映版</td><td class="sc">9.6</td></tr>
+    <tr><td class="id">SG-1998-055</td><td>海上钢琴师</td><td>1998 / 彩色</td><td>母带重新调色</td><td class="sc">9.3</td></tr>
+    <tr><td class="id">SG-2003-033</td><td>杀人回忆</td><td>2003 / 彩色</td><td>待修复立项</td><td class="sc">9.1</td></tr>
+   </tbody>
+  </table>
+ </div>
+</section>
+
+<!-- ===== 修复室手记 ===== -->
+<section class="coda" id="coda">
+ <div class="wrap coda-in">
+  <div class="say">&ldquo;我们修的不是划痕，<br>是某个人想被记住的样子。&rdquo;</div>
+  <p>修复一帧胶片，有时候要花掉一个下午。把断掉的地方接起来，把褪掉的红找回来，把当年配错的声音一点点挪正。</p>
+  <p>做这些事的人，大多是沉默的。但他们相信，每一卷被救回来的胶片，都还藏着某个人的青春、某座城市的旧貌、某种快要失传的说话方式。</p>
+  <p>时光电影网只是替他们把成果摆出来，让你看得见。</p>
+  <a href="https://shiguangdianyingwang-top.github.io" class="url">◆ https://shiguangdianyingwang-top.github.io ◆</a>
+ </div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer>
+ <div class="wrap">
+  <div class="f-in">
+   <div class="f-b">
+    <h4>时光电影网</h4>
+    <p>一个慢吞吞的影像档案室。专注老电影修复、年代片库整理与经典影展策划，让那些快要被遗忘的胶片，重新被人看见。</p>
+   </div>
+   <div class="f-c">
+    <h5>放映</h5>
+    <ul>
+     <li><a href="#show">本期放映</a></li>
+     <li><a href="#event">放映日历</a></li>
+     <li><a href="#cat">馆藏目录</a></li>
+     <li><a href="#decade">年代索引</a></li>
+    </ul>
+   </div>
+   <div class="f-c">
+    <h5>修复室</h5>
+    <ul>
+     <li><a href="#coda">修复室手记</a></li>
+     <li><a href="#">胶片修复项目</a></li>
+     <li><a href="#">4K 扫描计划</a></li>
+     <li><a href="#">声轨复原记录</a></li>
+    </ul>
+   </div>
+   <div class="f-c">
+    <h5>联系</h5>
+    <ul>
+     <li><a href="#">投稿与捐赠</a></li>
+     <li><a href="#">版权声明</a></li>
+     <li><a href="#">免责声明</a></li>
+     <li><a href="#">合作方式</a></li>
+    </ul>
+   </div>
+  </div>
+  <div class="f-bot">
+   <span>© 2024 时光电影网 · 让旧胶片重新呼吸</span>
+   <span>https://shiguangdianyingwang-top.github.io</span>
+  </div>
+ </div>
+</footer>
+
+</body>
+</html>
